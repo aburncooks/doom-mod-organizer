@@ -1,0 +1,3 @@
+# exclude logs
+/app-log-*
+/.idea

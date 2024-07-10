@@ -1,0 +1,10 @@
+app:
+  mods_path: F:\GZDoom\WADs
+  source_port: F:\GZDoom\DOOM2.WAD
+gui:
+  icon: DMOIcon.png
+logger:
+  handlers:
+    stream:
+      level: INFO
+      bubble: false

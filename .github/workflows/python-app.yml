@@ -1,0 +1,58 @@
+name: DOOM Mod Organiser build & test
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.11"
+
+    # REALLY need to uncook this
+    - name: Install environment dependencies
+      run: |
+        sudo apt-get install -y \
+          freeglut3 \
+          freeglut3-dev \
+          libgl1-mesa-dev \
+          libglu1-mesa-dev \
+          libgtk-3-dev \
+          libgtk2.0-dev \
+          libjpeg-dev \
+          libnotify-dev \
+          libsdl2-dev \
+          libsm-dev \
+          libtiff-dev \
+          libwebkit2gtk-4.0-dev \
+          libxtst-dev;
+
+    # spooky mystery meat wxPython wheel!
+    - name: Install python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pylint pytest
+        pip install https://extras.wxpython.org/wxPython4/extras/linux/gtk3/ubuntu-22.04/wxPython-4.2.1-cp311-cp311-linux_x86_64.whl
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    # why not pylint?
+    - name: Lint with Pylint
+      run: |
+        pylint --disable=no-member --errors-only dmo 
+
+    - name: Run pytest tests
+      run: |
+        python -m pytest tests
