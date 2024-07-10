@@ -1,10 +1,7 @@
-name: DOOM Mod Organiser build & test
+name: Build & test w/ wxPython
 
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+  workflow_dispatch:
 
 permissions:
   contents: read
