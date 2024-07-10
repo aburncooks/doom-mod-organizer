@@ -5,7 +5,7 @@ import os.path
 import sys
 
 import yaml
-from logbook import Logger, NestedSetup, StreamHandler, TimedRotatingFileHandler
+from logbook import Logger, NestedSetup, StreamHandler, TimedRotatingFileHandler, NullHandler
 
 from gui.app import DMOApplication
 from gui.main_frame import MainFrame
@@ -27,7 +27,12 @@ if __name__ == "__main__":
             if handler == "timed_rotating_file":
                 log_handlers.append(TimedRotatingFileHandler(os.path.abspath("logs"), **options))
 
+    if log_handlers is False:
+        # TODO: just cooking this for now for pyinstaller experimentations, there must be a better way
+        log_handlers.append(NullHandler())
+
     log_setup = NestedSetup(log_handlers)
+
     with log_setup:
         app_log.info("Starting Doom Mod Organizer")
         app = DMOApplication()
