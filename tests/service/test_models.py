@@ -34,8 +34,7 @@ class TestMods:
         Load the valid mods from the mods path folder
         """
         my_valid_files = [
-            "my_mod.wad",
-            "my_other_mod.WAD"
+            "my_mod.wad"
         ]
 
         all_files = [
