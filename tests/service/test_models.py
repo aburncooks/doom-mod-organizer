@@ -6,7 +6,7 @@ import os.path
 import yaml
 from tempfile import TemporaryDirectory
 
-from dmo.service.models import Mods, Profile
+from dmo.service.models import Launcher, Mods, Profile
 
 
 class TestMods:
@@ -147,3 +147,65 @@ class TestProfile:
 
         assert profile.as_dict() == {"name": name,
                                      "mods": mods}
+
+
+class TestLauncher:
+    """
+    A test launcher class for Launcher class tests
+    """
+    def test_new_launcher(self):
+        """
+        Make a Launcher class
+        """
+        my_config = {
+            "some_key": "some_value"
+        }
+
+        launcher = Launcher(my_config)
+
+        assert launcher.config == my_config
+
+    def test_launch_prep(self):
+        """
+        Return a list of launch params
+        """
+        profile = Profile()
+
+        my_config = {
+            "app": {
+                "source_port": "F:/source/port.exe"
+            }
+        }
+
+        launcher = Launcher(my_config)
+        launch_params = launcher.launch_prep(profile)
+
+        expected_params = [my_config["app"]["source_port"]]
+
+        assert launch_params == expected_params
+
+    def test_launch_prep_with_mods(self):
+        """
+        Return a list of launch params with mods
+        """
+        mods = [
+            "something/somewhere.wad",
+            "something/somewhere_else.wad"
+        ]
+
+        profile = Profile()
+        profile.mods = mods
+
+        my_config = {
+            "app": {
+                "source_port": "F:/source/port.exe"
+            }
+        }
+
+        launcher = Launcher(my_config)
+        launch_params = launcher.launch_prep(profile)
+
+        expected_params = [my_config["app"]["source_port"], "-file"]
+        expected_params.extend(mods)
+
+        assert launch_params == expected_params

@@ -2,6 +2,7 @@
 Various and sundry models
 """
 import os.path
+from subprocess import Popen
 
 import yaml
 
@@ -87,3 +88,41 @@ class Profile:
         """
         return {"name": self.name,
                 "mods": self.mods}
+
+
+class Launcher:
+    """
+    Launcher class, for launching the game
+    """
+    def __init__(self, config: dict) -> None:
+        """
+        Create a Launcher class
+
+        :param config: application config
+        """
+        self.config = config
+
+    def launch_prep(self, profile: Profile) -> list:
+        """
+        Prepare the launch params
+
+        :param profile: the profile to launch the game with
+
+        :return: list of launch params
+        """
+        launch_params = [self.config["app"]["source_port"]]
+
+        if len(profile.mods) > 0:
+            launch_params.append("-file")
+            launch_params.extend(profile.mods)
+
+        return launch_params
+
+    def launch(self, profile: Profile) -> None:
+        """
+        Launch the game
+
+        :param profile: the profile to launch the game with
+        """
+        launch_string = " ".join(self.launch_prep(profile))
+        Popen(launch_string)  # TODO: what about return?

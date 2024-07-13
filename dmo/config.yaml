@@ -1,6 +1,6 @@
 app:
   mods_path: F:\GZDoom\WADs
-  source_port: F:\GZDoom\DOOM2.WAD
+  source_port: F:\GZDoom\GZDoom.exe
 gui:
   icon: DMOIcon.png
 logger:

@@ -1,5 +1,5 @@
-name: my test profile
+name: My test profile
 mods:
-  - pk_doom_sfx_20120224.wad
-  - vsmooth.wad
-  - SIGIL.WAD
+  - F:\GZDoom\WADs\pk_doom_sfx_20120224.wad
+  - F:\GZDoom\WADs\vsmooth.wad
+  - F:\GZDoom\WADs\SIGIL.wad
