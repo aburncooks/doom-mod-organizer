@@ -77,7 +77,7 @@ class TestMods:
             mods = Mods(my_config)
             mods.load_mods_from_mods_path_folder()
 
-            assert mods.mods == [f"{os.path.join(test_dir, m)}" for m in all_files]
+            assert mods.mods == sorted([f"{os.path.join(test_dir, m)}" for m in all_files])
 
     def test_load_mods_from_mods_path_does_not_exist(self):
         """
