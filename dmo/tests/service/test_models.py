@@ -61,7 +61,7 @@ class TestMods:
         all_files = [
             "my_mod.PAK",
             "my_mod.pk3",
-            "my_mod.rar"
+            "my_mod.rar",
             "my_mod.wad",
             "my_mod.WAD",
         ]
