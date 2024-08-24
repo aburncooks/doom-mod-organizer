@@ -34,6 +34,7 @@ class Mods:
 
         new_mods = []
         for file in os.listdir(self.mods_path):
+            # TODO: something weird going on here with capitalized extensions
             if not file.endswith(tuple(self.config.params["mod_file_extensions"])):
                 continue
             new_mods.append(os.path.join(self.mods_path, file))

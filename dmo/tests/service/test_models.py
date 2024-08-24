@@ -59,11 +59,11 @@ class TestMods:
         Load the valid mods from the mods path folder with exotic file extensions
         """
         all_files = [
-            "my_mod.PAK",
-            "my_mod.pk3",
-            "my_mod.rar",
-            "my_mod.wad",
-            "my_mod.WAD",
+            "my_big_wad_mod.WAD",
+            "my_pak_mod.PAK",
+            "my_pk3_mod.pk3",
+            "my_rar_mod.rar",
+            "my_wad_mod.wad"
         ]
 
         with TemporaryDirectory() as test_dir:
