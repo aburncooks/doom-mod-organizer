@@ -3,8 +3,7 @@ A CLI inteface, for real DOOMers
 """
 import argparse
 
-import yaml
-
+from service.config import Config
 from service.models import Launcher, Profile
 
 
@@ -39,13 +38,12 @@ if __name__ == "__main__":
     if not args.config:
         args.config = "config.yaml"
 
-    with open(args.config, "r") as config_yaml:
-        config = yaml.safe_load(config_yaml.read())
-        args.config = config
+    dmo_config = Config()
+    dmo_config.from_yaml(args.config)
 
     profile = Profile()
     if args.profile:
         profile.load_profile_from_file(args.profile)
 
-    launcher = Launcher(config)
+    launcher = Launcher(dmo_config)
     launcher.launch(profile)

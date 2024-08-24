@@ -6,7 +6,8 @@ import os.path
 import yaml
 from tempfile import TemporaryDirectory
 
-from dmo.service.models import Launcher, Mods, Profile
+from service.config import Config
+from service.models import Launcher, Mods, Profile
 
 
 class TestMods:
@@ -18,10 +19,8 @@ class TestMods:
         Make a Mods class
         """
         my_path = "my/file/path"
-        my_config = {
-            "some_key": "some_value",
-            "mods_path": my_path
-        }
+        my_config = Config()
+        my_config.define_param("mods_path", my_path)
 
         mods = Mods(my_config)
 
@@ -47,27 +46,68 @@ class TestMods:
                 with open(os.path.join(test_dir, file), "w") as f:
                     f.write("...")
 
-            mods = Mods({"mods_path": test_dir})
+            my_config = Config()
+            my_config.define_param("mods_path", test_dir)
+
+            mods = Mods(my_config)
             mods.load_mods_from_mods_path_folder()
 
             assert mods.mods == [f"{os.path.join(test_dir, m)}" for m in my_valid_files]
+
+    def test_load_mods_from_mods_path_exotic_file_extensions(self):
+        """
+        Load the valid mods from the mods path folder with exotic file extensions
+        """
+        all_files = [
+            "my_mod.PAK",
+            "my_mod.pk3",
+            "my_mod.rar"
+            "my_mod.wad",
+            "my_mod.WAD",
+        ]
+
+        with TemporaryDirectory() as test_dir:
+            for file in all_files:
+                with open(os.path.join(test_dir, file), "w") as f:
+                    f.write("...")
+
+            my_config = Config()
+            my_config.define_param("mods_path", test_dir)
+            my_config.define_param("mod_file_extensions", [".wad", ".WAD", ".pk3", ".PAK", ".rar"])
+
+            mods = Mods(my_config)
+            mods.load_mods_from_mods_path_folder()
+
+            assert mods.mods == [f"{os.path.join(test_dir, m)}" for m in all_files]
+
+    def test_load_mods_from_mods_path_does_not_exist(self):
+        """
+        Load the valid mods from the mods path folder that does not exist
+        """
+        my_config = Config()
+        my_config.define_param("mods_path", "missing/path")
+
+        mods = Mods(my_config)
+        mods.mods = ["mod.wad", "anothermod.wad"]
+        mods.load_mods_from_mods_path_folder()
+
+        assert mods.mods == []
 
     def test_mods_as_dict(self):
         """
         Return the mods as a dictionary
         """
         my_path = "my/file/path"
-        my_config = {
-            "some_key": "some_value",
-            "mods_path": my_path
-        }
+
+        my_config = Config()
+        my_config.define_param("mods_path", my_path)
+
         my_mods = ["something/somewhere.WAD"]
 
         mods = Mods(my_config)
         mods.mods = my_mods
 
-        assert mods.as_dict() == {"config": my_config,
-                                  "mods_path": my_path,
+        assert mods.as_dict() == {"mods_path": my_path,
                                   "mods": my_mods}
 
 
@@ -157,9 +197,7 @@ class TestLauncher:
         """
         Make a Launcher class
         """
-        my_config = {
-            "some_key": "some_value"
-        }
+        my_config = Config()
 
         launcher = Launcher(my_config)
 
@@ -171,16 +209,13 @@ class TestLauncher:
         """
         profile = Profile()
 
-        my_config = {
-            "app": {
-                "source_port": "F:/source/port.exe"
-            }
-        }
+        my_config = Config()
+        my_config.define_param("source_port", "F:/source/port.exe")
 
         launcher = Launcher(my_config)
         launch_params = launcher.launch_prep(profile)
 
-        expected_params = [my_config["app"]["source_port"]]
+        expected_params = [my_config.params["source_port"]]
 
         assert launch_params == expected_params
 
@@ -196,16 +231,13 @@ class TestLauncher:
         profile = Profile()
         profile.mods = mods
 
-        my_config = {
-            "app": {
-                "source_port": "F:/source/port.exe"
-            }
-        }
+        my_config = Config()
+        my_config.define_param("source_port", "F:/source/port.exe")
 
         launcher = Launcher(my_config)
         launch_params = launcher.launch_prep(profile)
 
-        expected_params = [my_config["app"]["source_port"], "-file"]
+        expected_params = [my_config.params["source_port"], "-file"]
         expected_params.extend(mods)
 
         assert launch_params == expected_params
