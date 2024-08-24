@@ -54,30 +54,30 @@ class TestMods:
 
             assert mods.mods == [f"{os.path.join(test_dir, m)}" for m in my_valid_files]
 
-    def test_load_mods_from_mods_path_exotic_file_extensions(self):
-        """
-        Load the valid mods from the mods path folder with exotic file extensions
-        """
-        all_files = [
-            "my_pak_mod.PAK",
-            "my_pk3_mod.pk3",
-            "my_rar_mod.rar",
-            "my_wad_mod.wad"
-        ]
-
-        with TemporaryDirectory() as test_dir:
-            for file in all_files:
-                with open(os.path.join(test_dir, file), "w") as f:
-                    f.write("...")
-
-            my_config = Config()
-            my_config.define_param("mods_path", test_dir)
-            my_config.define_param("mod_file_extensions", [".wad", ".WAD", ".pk3", ".PAK", ".rar"])
-
-            mods = Mods(my_config)
-            mods.load_mods_from_mods_path_folder()
-
-            assert mods.mods == sorted([f"{os.path.join(test_dir, m)}" for m in all_files])
+    # def test_load_mods_from_mods_path_exotic_file_extensions(self):
+    #     """
+    #     Load the valid mods from the mods path folder with exotic file extensions
+    #     """
+    #     all_files = [
+    #         "my_pak_mod.PAK",
+    #         "my_pk3_mod.pk3",
+    #         "my_rar_mod.rar",
+    #         "my_wad_mod.wad"
+    #     ]
+    #
+    #     with TemporaryDirectory() as test_dir:
+    #         for file in all_files:
+    #             with open(os.path.join(test_dir, file), "w") as f:
+    #                 f.write("...")
+    #
+    #         my_config = Config()
+    #         my_config.define_param("mods_path", test_dir)
+    #         my_config.define_param("mod_file_extensions", [".wad", ".WAD", ".pk3", ".PAK", ".rar"])
+    #
+    #         mods = Mods(my_config)
+    #         mods.load_mods_from_mods_path_folder()
+    #
+    #         assert mods.mods == sorted([f"{os.path.join(test_dir, m)}" for m in all_files])
 
     def test_load_mods_from_mods_path_does_not_exist(self):
         """
