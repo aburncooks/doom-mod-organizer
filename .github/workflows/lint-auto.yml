@@ -35,4 +35,5 @@ jobs:
 
     - name: Run pytest tests
       run: |
+        cd dmo
         python -m pytest tests

@@ -1,10 +1,7 @@
-app:
-  mods_path: F:\GZDoom\WADs
-  source_port: F:\GZDoom\GZDoom.exe
-gui:
-  icon: DMOIcon.png
-logger:
-  handlers:
-    stream:
-      level: INFO
-      bubble: false
+icon: DMOIcon.png
+mods_path: F:\GZDoom\WADs
+source_port: F:\GZDoom\GZDoom.exe
+mod_file_extensions:
+  - .wad
+  - .WAD
+hello: there
