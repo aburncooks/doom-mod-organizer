@@ -4,4 +4,3 @@ source_port: F:\GZDoom\GZDoom.exe
 mod_file_extensions:
   - .wad
   - .WAD
-hello: there
