@@ -1,10 +1,8 @@
 """
 Initializes data and launches the application
 """
-import os.path
 import sys
 
-import yaml
 from logbook import Logger, NestedSetup, StreamHandler, TimedRotatingFileHandler, NullHandler
 
 from gui.app import DMOApplication

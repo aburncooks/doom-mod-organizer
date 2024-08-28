@@ -6,6 +6,8 @@ from typing import Self
 import wx
 from logbook import Logger
 
+from gui.controls_panel import ControlsPanel
+from gui.selections_panel import SelectionsPanel
 from service.config import Config
 
 
@@ -32,7 +34,7 @@ class MainFrame(wx.Frame):
         Create a main frame
 
         :param title: window title
-        :param config: app configuration
+        :param config: the application config
         """
         self.title = title
         self.config = config
@@ -43,7 +45,16 @@ class MainFrame(wx.Frame):
         self.SetIcon(wx.Icon(self.config.params["icon"]))
 
         # do some interesting stuff here
-        app_log.info("I'm doing something interesting")
+        self.main_frame_sizer = wx.BoxSizer(wx.HORIZONTAL)
+
+        self.controls_panel = ControlsPanel(self, self.config)
+
+        self.selections_panel = SelectionsPanel(self, self.config)
+
+        self.main_frame_sizer.Add(self.controls_panel, 1, wx.EXPAND)
+        self.main_frame_sizer.Add(self.selections_panel, 1, wx.EXPAND)
+
+        self.SetSizer(self.main_frame_sizer)
 
         # display the frame
         self.Show()
